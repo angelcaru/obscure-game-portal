@@ -83,14 +83,20 @@ function draw() {
     }
 
     if (board.aiEnabled && turn === 1) {
-        board.makeAiMove(turn);
-        turn = 1 - turn;
+        aiMoveCooldown -= 1/frameRate();
+        if (aiMoveCooldown <= 0) {
+            board.makeAiMove(turn);
+            turn = 1 - turn;
+        }
     }
 }
 
 let currentHex = null;
+let aiMoveCooldown = 0;
 
 function mousePressed() {
+    if (board.aiEnabled && turn === 1) return;
+
     const mx = mouseX - width / 2;
     const my = mouseY - height / 2;
     const hex = screen2Hex(layout, Point(mx, my));
@@ -106,6 +112,8 @@ function mousePressed() {
         board.performMove(move);
         currentHex = null;
         turn = 1 - turn;
+
+        aiMoveCooldown = 0.5;
     }
 }
 
