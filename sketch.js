@@ -18,7 +18,6 @@ function draw() {
     translate(width / 2, height / 2);
     for (const { hex } of board.grid) {
         const loc = hex2Screen(layout, hex);
-        const coord = hexGetCoord(hex);
         push();
         fill("limegreen");
         for (const home of board.homes) {
