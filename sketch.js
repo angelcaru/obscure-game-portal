@@ -16,6 +16,8 @@ let turn = 0;
 function draw() {
     background(turn === 0 ? "lightgray" : "darkgray");
     translate(width / 2, height / 2);
+
+    board.checkHasMoves(turn);
     for (const { hex } of board.grid) {
         const loc = hex2Screen(layout, hex);
         push();
@@ -68,6 +70,22 @@ function draw() {
         noLoop();
         return;
     }
+
+    if (board.drawByRepetition) {
+        background("limegreen");
+        fill("black");
+        stroke("black");
+        textSize(40);
+        textAlign(CENTER, CENTER);
+        text(`TABLAS POR REPETICIÓN`, 0, 0);
+        noLoop();
+        return;
+    }
+
+    if (board.aiEnabled && turn === 1) {
+        board.makeAiMove(turn);
+        turn = 1 - turn;
+    }
 }
 
 let currentHex = null;
@@ -89,5 +107,9 @@ function mousePressed() {
         currentHex = null;
         turn = 1 - turn;
     }
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
 }
 

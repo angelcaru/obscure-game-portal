@@ -1,3 +1,5 @@
+const MINIMAX_DEPTH = 3;
+
 class Board {
     constructor() {
         this.grid = [];
@@ -23,6 +25,10 @@ class Board {
         for (const home of this.homes) {
             this.at(home.hex).piece = home.owner;
         }
+
+        this.aiEnabled = true;
+        this.previousPositions = {};
+        this.drawByRepetition = false;
     }
 
     winner() {
@@ -52,6 +58,12 @@ class Board {
             }
         }
     }
+
+    checkHasMoves(turn) {
+        if (this.possibleMoves(turn).length === 0) {
+            this.scores[1-turn] = 3;
+        }
+    }
     
     performMove(move) {
         switch (move.type) {
@@ -67,6 +79,10 @@ class Board {
                 throw `not implemented: ${move.type}`;
         }
         this.checkHomes(move.dest);
+
+        const hash = gridHash(this.grid);
+        if (!(hash in this.previousPositions)) this.previousPositions[hash] = 0;
+        if (++this.previousPositions[hash] >= 3) this.drawByRepetition = true;
     }
     
     possibleMovesForHex(turn, hex) {
@@ -74,6 +90,25 @@ class Board {
         return moves.filter(move => hexIsEquals(move.src, hex));
     }
     
+    possibleUniqueMoves(turn) {
+        const moves = this.possibleMoves(turn);
+
+        const cloneDests = {};
+        for (let i = 0; i < moves.length; i++) {
+            const move = moves[i];
+            if (move.type === "capture") return moves;
+
+            const coord = hexGetCoord(move.dest).toString();
+            if (cloneDests[coord]) {
+                moves.splice(i, 1);
+                i--;
+            } else {
+                cloneDests[coord] = true;
+            }
+        }
+        return moves;
+    }
+
     possibleMoves(turn) {
         let moves = this.possibleCaptures(turn);
         if (moves.length === 0) moves = this.possibleClones(turn);
@@ -134,5 +169,89 @@ class Board {
     
     inbounds(hex) {
         return this.grid.filter(tile => hexIsEquals(hex, tile.hex)).length > 0;
-    }    
+    }
+
+    makeAiMove(turn) {
+        let bestMoves = [];
+        let bestScore = -Infinity;
+        const moves = this.possibleUniqueMoves(turn);
+        for (const move of moves) {
+            const newBoard = this.copy();
+            newBoard.performMove(move);
+
+            const score = -newBoard.evaluate(1-turn);
+            if (score > bestScore) {
+                bestScore = score;
+                bestMoves = [move];
+            } else if (score === bestScore) {
+                bestMoves.push(move);
+            }
+        }
+
+        this.performMove(random(bestMoves));
+    }
+
+    evaluate(turn, depth = MINIMAX_DEPTH) {
+        if (this.winner() === turn) return Infinity;
+        if (this.winner() === 1 - turn) return -Infinity;
+        if (this.drawByRepetition) return 0;
+
+        if (depth === 0) return this.evaluateHeuristic(turn);
+
+        let bestScore = -Infinity;
+        const moves = this.possibleUniqueMoves(turn);
+        for (const move of moves) {
+            const newBoard = this.copy();
+            newBoard.performMove(move);
+
+            const score = -newBoard.evaluate(1-turn, depth-1);
+            if (score > bestScore) bestScore = score;
+        }
+
+        return bestScore;
+    }
+
+    evaluateHeuristic(turn) {
+        let score = this.scores[turn] - this.scores[1-turn];
+        score *= 10;
+
+        for (const {owner, hex} of this.homes) {
+            if (this.at(hex).piece === owner) {
+                score += owner === turn ? 3 : -3;
+            }
+        }
+
+        return score;
+    }
+
+    copy() {
+        const ret = new Board();
+        ret.grid = copyGrid(this.grid);
+        ret.scores = this.scores.slice();
+        ret.aiEnabled = this.aiEnabled;
+        ret.previousPositions = {...this.previousPositions};
+        ret.drawByRepetition = this.drawByRepetition;
+        return ret;
+    }
+}
+
+function copyGrid(grid) {
+    return grid.map(({hex, piece}) => ({hex, piece}));
+}
+
+function gridEq(grid1, grid2) {
+    if (grid1.length !== grid2.length) return false;
+    for (let i = 0; i < grid1.length; i++) {
+        if (grid1[i].piece !== grid2[i].piece) return false;
+    }
+    return true;
+}
+
+function gridHash(grid) {
+    let hash = "";
+    for (const {piece} of grid) {
+        hash += piece;
+        hash += ";";
+    }
+    return hash;
 }
