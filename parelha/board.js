@@ -1,7 +1,7 @@
 const MINIMAX_DEPTH = 3;
 
 class ParelhaBoard {
-    constructor() {
+    constructor(aiEnabled) {
         this.grid = [];
         this.homes = Object.freeze([
             {owner: 0, hex: Hex(0, 3, -3)},
@@ -26,7 +26,7 @@ class ParelhaBoard {
             this.at(home.hex).piece = home.owner;
         }
 
-        this.aiEnabled = true;
+        this.aiEnabled = aiEnabled;
         this.previousPositions = {};
         this.drawByRepetition = false;
     }

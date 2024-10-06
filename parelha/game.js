@@ -2,8 +2,8 @@ const PARELHA_BOARD_SIZE = 4;
 const PARELHA_TILE_SIZE = 40;
 
 class Parelha {
-    constructor() {
-        this.board = new ParelhaBoard();
+    constructor(aiEnabled) {
+        this.board = new ParelhaBoard(aiEnabled);
         this.layout = this.board.layout;
         this.turn = 0;
         this.currentHex = null;
