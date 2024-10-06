@@ -19,6 +19,7 @@ class Parelha {
             const loc = hex2Screen(this.layout, hex);
             push();
             fill("limegreen");
+            if (hexIsEquals(this.mouseHex(), hex)) fill("green");
             for (const home of this.board.homes) {
                 if (hexIsEquals(hex, home.hex)) {
                     fill(home.owner === 0 ? "white" : "black");
@@ -93,9 +94,7 @@ class Parelha {
     mousePressed() {
         if (this.board.aiEnabled && this.turn === 1) return;
     
-        const mx = mouseX - width / 2;
-        const my = mouseY - height / 2;
-        const hex = screen2Hex(this.layout, Point(mx, my));
+        const hex = this.mouseHex();
         
         if (!this.board.inbounds(hex)) return;
         
@@ -111,5 +110,11 @@ class Parelha {
     
             this.aiMoveCooldown = 0.5;
         }
+    }
+
+    mouseHex() {
+        const mx = mouseX - width / 2;
+        const my = mouseY - height / 2;
+        return screen2Hex(this.layout, Point(mx, my));
     }
 }
