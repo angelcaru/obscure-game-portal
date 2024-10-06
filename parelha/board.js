@@ -1,6 +1,6 @@
 const MINIMAX_DEPTH = 3;
 
-class Board {
+class ParelhaBoard {
     constructor() {
         this.grid = [];
         this.homes = Object.freeze([
@@ -13,10 +13,10 @@ class Board {
             {owner: 1, hex: Hex(0, -3, 3)},
         ]);
         this.scores = [0, 0];
-        this.layout = hexLayout(pointyOrient, Point(TILE_SIZE, TILE_SIZE));
+        this.layout = hexLayout(pointyOrient, Point(PARELHA_TILE_SIZE, PARELHA_TILE_SIZE));
 
         const hexes = [];
-        hexGenerateBoard(BOARD_SIZE - 1, hexes);
+        hexGenerateBoard(PARELHA_BOARD_SIZE - 1, hexes);
         
         for (const hex of hexes) {
             this.grid.push({hex, piece: -1});
@@ -225,7 +225,7 @@ class Board {
     }
 
     copy() {
-        const ret = new Board();
+        const ret = new ParelhaBoard();
         ret.grid = copyGrid(this.grid);
         ret.scores = this.scores.slice();
         ret.aiEnabled = this.aiEnabled;
