@@ -22,6 +22,7 @@ function draw() {
         text("MENÚ PRINCIPAL", width/2, height/8);
 
         drawButton(width/2, height/4, "Parelha");
+        drawButton(width/2, height/4 + BUTTON_GAP, "32 Dados");
     } else {
         drawButton(width/2, height/4, "1 jugador");
         drawButton(width/2, height/4 + BUTTON_GAP, "2 jugadores");
@@ -53,6 +54,8 @@ function mousePressed() {
     if (selectedGame === null) {
         if (mouseOverButton(width/2, height/4)) {
             selectedGame = Parelha;
+        } else if (mouseOverButton(width/2, height/4+BUTTON_GAP)) {
+            game = new DiceChess();
         }
     } else {
         if (mouseOverButton(width/2, height/4)) {
@@ -61,6 +64,10 @@ function mousePressed() {
             game = new selectedGame(false);
         }
     }
+}
+
+function keyPressed() {
+    if (game !== null) return game.keyPressed();
 }
 
 function windowResized() {

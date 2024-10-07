@@ -112,6 +112,8 @@ class Parelha {
         }
     }
 
+    keyPressed() {}
+
     mouseHex() {
         const mx = mouseX - width / 2;
         const my = mouseY - height / 2;
