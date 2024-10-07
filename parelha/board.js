@@ -198,7 +198,7 @@ class ParelhaBoard extends Board {
     }
 }
 
-ParelhaBoard.MINIMAX_DEPTH = 3;
+ParelhaBoard.MINIMAX_DEPTH = 4;
 
 function copyGrid(grid) {
     return grid.map(({hex, piece}) => ({hex, piece}));
