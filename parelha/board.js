@@ -1,7 +1,6 @@
-const MINIMAX_DEPTH = 3;
-
-class ParelhaBoard {
+class ParelhaBoard extends Board {
     constructor(aiEnabled) {
+        super();
         this.grid = [];
         this.homes = Object.freeze([
             {owner: 0, hex: Hex(0, 3, -3)},
@@ -171,44 +170,8 @@ class ParelhaBoard {
         return this.grid.filter(tile => hexIsEquals(hex, tile.hex)).length > 0;
     }
 
-    makeAiMove(turn) {
-        let bestMoves = [];
-        let bestScore = -Infinity;
-        const moves = this.possibleUniqueMoves(turn);
-        for (const move of moves) {
-            const newBoard = this.copy();
-            newBoard.performMove(move);
-
-            const score = -newBoard.evaluate(1-turn);
-            if (score > bestScore) {
-                bestScore = score;
-                bestMoves = [move];
-            } else if (score === bestScore) {
-                bestMoves.push(move);
-            }
-        }
-
-        this.performMove(random(bestMoves));
-    }
-
-    evaluate(turn, depth = MINIMAX_DEPTH) {
-        if (this.winner() === turn) return Infinity;
-        if (this.winner() === 1 - turn) return -Infinity;
-        if (this.drawByRepetition) return 0;
-
-        if (depth === 0) return this.evaluateHeuristic(turn);
-
-        let bestScore = -Infinity;
-        const moves = this.possibleUniqueMoves(turn);
-        for (const move of moves) {
-            const newBoard = this.copy();
-            newBoard.performMove(move);
-
-            const score = -newBoard.evaluate(1-turn, depth-1);
-            if (score > bestScore) bestScore = score;
-        }
-
-        return bestScore;
+    isDrawn() {
+        return this.drawByRepetition;
     }
 
     evaluateHeuristic(turn) {
@@ -234,6 +197,8 @@ class ParelhaBoard {
         return ret;
     }
 }
+
+ParelhaBoard.MINIMAX_DEPTH = 3;
 
 function copyGrid(grid) {
     return grid.map(({hex, piece}) => ({hex, piece}));
