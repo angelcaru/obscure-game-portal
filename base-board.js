@@ -23,7 +23,7 @@ class Board {
             const newBoard = this.copy();
             newBoard.performMove(move);
 
-            const score = -newBoard.evaluate(1-turn);
+            const score = newBoard.evaluate(1-turn, this.constructor.MINIMAX_DEPTH, false);
             if (score > bestScore) {
                 bestScore = score;
                 bestMoves = [move];
@@ -35,7 +35,7 @@ class Board {
         this.performMove(random(bestMoves));
     }
 
-    evaluate(turn, depth) {
+    evaluate(turn, depth, maximizingPlayer = true) {
         if (depth === undefined) depth = this.constructor.MINIMAX_DEPTH;
 
         if (this.winner() === turn) return Infinity;
@@ -44,14 +44,16 @@ class Board {
 
         if (depth === 0) return this.evaluateHeuristic(turn);
 
-        let bestScore = -Infinity;
+        const cond = maximizingPlayer ? (a, b) => a > b : (a, b) => a < b;
+
+        let bestScore = maximizingPlayer ? -Infinity : Infinity;
         const moves = this.possibleUniqueMoves(turn);
         for (const move of moves) {
             const newBoard = this.copy();
             newBoard.performMove(move);
 
-            const score = -newBoard.evaluate(1-turn, depth-1);
-            if (score > bestScore) bestScore = score;
+            const score = newBoard.evaluate(1-turn, depth-1, !maximizingPlayer);
+            if (cond(score, bestScore)) bestScore = score;
         }
 
         return bestScore;
