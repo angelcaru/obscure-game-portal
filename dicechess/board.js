@@ -1,5 +1,6 @@
-class DiceChessBoard {
-    constructor() {
+class DiceChessBoard extends Board {
+    constructor(aiEnabled) {
+        super();
         this.grid = Array(DICE_CHESS_BOARD_SIZE ** 2).fill(0).map(() => ({owner: -1, value: 0}));
 
         for (let y = 0; y < 2; y++) {
@@ -11,6 +12,13 @@ class DiceChessBoard {
                 this.at(x, y).value = floor(random(1, 7));
             }
         }
+        this.aiEnabled = aiEnabled;
+    }
+
+    copy() {
+        const newBoard = new DiceChessBoard(this.aiEnabled);
+        newBoard.grid = this.grid.map(({owner, value}) => ({owner, value}));
+        return newBoard;
     }
 
     legalMovesForTile(turn, x, y) {
@@ -131,3 +139,5 @@ class DiceChessBoard {
         return this.grid[this.idx(x, y)];
     }
 }
+
+DiceChessBoard.MINIMAX_DEPTH = 1;

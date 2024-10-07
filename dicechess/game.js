@@ -2,8 +2,8 @@ const DICE_CHESS_BOARD_SIZE = 8;
 const DICE_CHESS_TILE_SIZE = 55;
 
 class DiceChess {
-    constructor() {
-        this.board = new DiceChessBoard();
+    constructor(aiEnabled) {
+        this.board = new DiceChessBoard(aiEnabled);
         this.currentTile = null;
 
         this.turn = 0;
@@ -56,6 +56,11 @@ class DiceChess {
             text(`JUGADOR ${winner+1}: VICTORIA`, 0, 0);
             noLoop();
             return;
+        }
+
+        if (this.board.aiEnabled && this.turn === 1) {
+            this.board.makeAiMove(this.turn);
+            this.turn = 1 - this.turn;
         }
     }
 

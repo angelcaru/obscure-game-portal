@@ -55,7 +55,7 @@ function mousePressed() {
         if (mouseOverButton(width/2, height/4)) {
             selectedGame = Parelha;
         } else if (mouseOverButton(width/2, height/4+BUTTON_GAP)) {
-            game = new DiceChess();
+            selectedGame = DiceChess;
         }
     } else {
         if (mouseOverButton(width/2, height/4)) {
