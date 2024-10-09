@@ -7,7 +7,7 @@ class Parelha {
         this.layout = this.board.layout;
         this.turn = 0;
         this.currentHex = null;
-        this.aiMoveCooldown = 0;
+        this.aiMoveCooldown = options.aiMoveCooldown;
     }
 
     draw() {
@@ -108,7 +108,7 @@ class Parelha {
             this.currentHex = null;
             this.turn = 1 - this.turn;
     
-            this.aiMoveCooldown = 0.5;
+            this.aiMoveCooldown = options.aiMoveCooldown;
         }
     }
 

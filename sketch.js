@@ -3,6 +3,7 @@ let selectedGame = null;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
+    fetchOptionsFromLocalStorage();
 }
 
 const BUTTON_FONT_SIZE = 26;
@@ -23,6 +24,7 @@ function draw() {
 
         drawButton(width/2, height/4, "Parelha");
         drawButton(width/2, height/4 + BUTTON_GAP, "32 Dados");
+        drawButton(width/2, height-height/16, "Opciones");
     } else {
         drawButton(width/2, height/4, "1 jugador");
         drawButton(width/2, height/4 + BUTTON_GAP, "2 jugadores");
@@ -55,7 +57,9 @@ function mousePressed() {
         if (mouseOverButton(width/2, height/4)) {
             selectedGame = Parelha;
         } else if (mouseOverButton(width/2, height/4+BUTTON_GAP)) {
-            selectedGame = DiceChess;
+            game = new DiceChess(false);
+        } else if (mouseOverButton(width/2, height-height/16)) {
+            game = new OptionsMenu();
         }
     } else {
         if (mouseOverButton(width/2, height/4)) {
