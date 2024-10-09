@@ -38,8 +38,8 @@ class Board {
     evaluate(turn, depth, maximizingPlayer = true, alpha = -Infinity, beta = Infinity) {
         if (depth === undefined) depth = this.constructor.MINIMAX_DEPTH;
 
-        if (this.winner() === turn) return Infinity;
-        if (this.winner() === 1 - turn) return -Infinity;
+        if (this.winner() === turn) return maximizingPlayer ? Infinity : -Infinity;
+        if (this.winner() === 1 - turn) return maximizingPlayer ? -Infinity : Infinity;
         if (this.isDrawn()) return 0;
 
         if (depth === 0) return this.evaluateHeuristic(turn);
