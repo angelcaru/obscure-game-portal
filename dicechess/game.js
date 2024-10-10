@@ -2,8 +2,8 @@ const DICE_CHESS_BOARD_SIZE = 8;
 const DICE_CHESS_TILE_SIZE = 55;
 
 class DiceChess {
-    constructor(aiEnabled) {
-        this.board = new DiceChessBoard(aiEnabled);
+    constructor() {
+        this.board = new DiceChessBoard();
         this.currentTile = null;
 
         this.turn = 0;
@@ -119,4 +119,13 @@ class DiceChess {
         const y = floor((my - baseY) / DICE_CHESS_TILE_SIZE);
         return {x, y};
     }
+
+    restart() {
+        this.board = new DiceChessBoard();
+        this.currentTile = null;
+
+        this.turn = 0;
+    }
 }
+
+DiceChess.prototype.canPause = true;

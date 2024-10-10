@@ -64,13 +64,17 @@ function mousePressed() {
     } else {
         if (mouseOverButton(width/2, height/4)) {
             game = new selectedGame(true);
+            selectedGame = null;
         } else if (mouseOverButton(width/2, height/4+BUTTON_GAP)) {
             game = new selectedGame(false);
+            selectedGame = null;
         }
     }
 }
 
 function keyPressed() {
+    if (game !== null && game.canPause && key === "p") game = new PauseMenu(game);
+
     if (game !== null) return game.keyPressed();
 }
 

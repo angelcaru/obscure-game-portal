@@ -119,4 +119,13 @@ class Parelha {
         const my = mouseY - height / 2;
         return screen2Hex(this.layout, Point(mx, my));
     }
+
+    restart() {
+        this.board = new ParelhaBoard(this.board.aiEnabled);
+        this.turn = 0;
+        this.currentHex = null;
+        this.aiMoveCooldown = options.aiMoveCooldown;
+    }
 }
+
+Parelha.prototype.canPause = true;
