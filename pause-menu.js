@@ -1,6 +1,7 @@
 class PauseMenu {
     constructor(game) {
         this.game = game;
+        this.ui = new Ui(width/2, height/4, height-height/16);
     }
 
     draw() {
@@ -11,27 +12,29 @@ class PauseMenu {
         fill(255);
         stroke(255);
 
+        this.ui.reset();
+
         text("PAUSA", width/2, height/8);
 
-        drawButton(width/2, height/4, "Continuar");
-        drawButton(width/2, height/4+BUTTON_GAP, "Reiniciar");
-        drawButton(width/2, height/4+BUTTON_GAP*2, "Opciones");
-        drawButton(width/2, height/4+BUTTON_GAP*3, "Volver al menú principal");
+        this.ui.button("Continuar", () => {
+            game = this.game;
+        });
+        this.ui.button("Reiniciar", () => {
+            game = this.game;
+            this.game.restart();
+        });
+        this.ui.button("Opciones", () => {
+            game = new OptionsMenu(this);
+        });
+        this.ui.button("Volver al menú principal", () => {
+            game = null;
+        });
 
         pop();
     }
 
     mousePressed() {
-        if (mouseOverButton(width/2, height/4)) {
-            game = this.game;
-        } else if (mouseOverButton(width/2, height/4+BUTTON_GAP)) {
-            game = this.game;
-            game.restart();
-        } else if (mouseOverButton(width/2, height/4+BUTTON_GAP*2)) {
-            game = new OptionsMenu(this);
-        } else if (mouseOverButton(width/2, height/4+BUTTON_GAP*3)) {
-            game = null;
-        }
+        this.ui.mousePressed();
     }
     keyPressed() {}
 }
