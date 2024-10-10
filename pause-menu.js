@@ -15,7 +15,8 @@ class PauseMenu {
 
         drawButton(width/2, height/4, "Continuar");
         drawButton(width/2, height/4+BUTTON_GAP, "Reiniciar");
-        drawButton(width/2, height/4+BUTTON_GAP*2, "Volver al menú principal");
+        drawButton(width/2, height/4+BUTTON_GAP*2, "Opciones");
+        drawButton(width/2, height/4+BUTTON_GAP*3, "Volver al menú principal");
 
         pop();
     }
@@ -27,6 +28,8 @@ class PauseMenu {
             game = this.game;
             game.restart();
         } else if (mouseOverButton(width/2, height/4+BUTTON_GAP*2)) {
+            game = new OptionsMenu(this);
+        } else if (mouseOverButton(width/2, height/4+BUTTON_GAP*3)) {
             game = null;
         }
     }

@@ -59,7 +59,7 @@ function mousePressed() {
         } else if (mouseOverButton(width/2, height/4+BUTTON_GAP)) {
             game = new DiceChess(false);
         } else if (mouseOverButton(width/2, height-height/16)) {
-            game = new OptionsMenu();
+            game = new OptionsMenu(null);
         }
     } else {
         if (mouseOverButton(width/2, height/4)) {

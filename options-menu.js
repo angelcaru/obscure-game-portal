@@ -12,6 +12,10 @@ function fetchOptionsFromLocalStorage() {
 }
 
 class OptionsMenu {
+    constructor(game) {
+        this.game = game;
+    }
+
     draw() {
         push();
         background(0);
@@ -37,7 +41,7 @@ class OptionsMenu {
 
     mousePressed() {
         if (mouseOverButton(width/2, height-height/16)) {
-            game = null;
+            game = this.game;
         } else if (mouseOverButton(width/2, height-height/16-BUTTON_GAP)) {
             localStorage.clear();
             options = {...defaultOptions};
