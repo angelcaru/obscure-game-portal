@@ -13,6 +13,17 @@ class DiceChess {
         background(this.turn === 0 ? "#aaaaaa" : "#222222");
         translate(width/2, height/2);
         
+        const winner = this.board.winner();
+        if (winner !== -1) {
+            background(winner === 0 ? "white" : "black");
+            fill(winner === 0 ? "black" : "white");
+            stroke(winner === 0 ? "black" : "white");
+            textSize(40);
+            textAlign(CENTER, CENTER);
+            text(`JUGADOR ${winner+1}: VICTORIA`, 0, 0);
+            return;
+        }
+        
         noStroke();
         const baseX = -(DICE_CHESS_BOARD_SIZE/2 * DICE_CHESS_TILE_SIZE);
         const baseY = -(DICE_CHESS_BOARD_SIZE/2 * DICE_CHESS_TILE_SIZE);
@@ -44,18 +55,6 @@ class DiceChess {
                     }
                 }
             }
-        }
-
-        const winner = this.board.winner();
-        if (winner !== -1) {
-            background(winner === 0 ? "white" : "black");
-            fill(winner === 0 ? "black" : "white");
-            stroke(winner === 0 ? "black" : "white");
-            textSize(40);
-            textAlign(CENTER, CENTER);
-            text(`JUGADOR ${winner+1}: VICTORIA`, 0, 0);
-            noLoop();
-            return;
         }
 
         if (this.board.aiEnabled && this.turn === 1) {

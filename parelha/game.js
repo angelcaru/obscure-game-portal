@@ -13,6 +13,27 @@ class Parelha {
     draw() {
         background(this.turn === 0 ? "lightgray" : "darkgray");
         translate(width / 2, height / 2);
+
+        const winner = this.board.winner();
+        if (winner !== -1) {
+            background(winner === 0 ? "white" : "black");
+            fill(winner === 0 ? "black" : "white");
+            stroke(winner === 0 ? "black" : "white");
+            textSize(40);
+            textAlign(CENTER, CENTER);
+            text(`JUGADOR ${winner+1}: VICTORIA`, 0, 0);
+            return;
+        }
+    
+        if (this.board.drawByRepetition) {
+            background("limegreen");
+            fill("black");
+            stroke("black");
+            textSize(40);
+            textAlign(CENTER, CENTER);
+            text(`TABLAS POR REPETICIÓN`, 0, 0);
+            return;
+        }
     
         this.board.checkHasMoves(this.turn);
         for (const { hex } of this.board.grid) {
@@ -57,29 +78,6 @@ class Parelha {
             // fill("gray");
             // text(coord, loc.x, loc.y);
             // pop();
-        }
-    
-        const winner = this.board.winner();
-        if (winner !== -1) {
-            background(winner === 0 ? "white" : "black");
-            fill(winner === 0 ? "black" : "white");
-            stroke(winner === 0 ? "black" : "white");
-            textSize(40);
-            textAlign(CENTER, CENTER);
-            text(`JUGADOR ${winner+1}: VICTORIA`, 0, 0);
-            noLoop();
-            return;
-        }
-    
-        if (this.board.drawByRepetition) {
-            background("limegreen");
-            fill("black");
-            stroke("black");
-            textSize(40);
-            textAlign(CENTER, CENTER);
-            text(`TABLAS POR REPETICIÓN`, 0, 0);
-            noLoop();
-            return;
         }
     
         if (this.board.aiEnabled && this.turn === 1) {
