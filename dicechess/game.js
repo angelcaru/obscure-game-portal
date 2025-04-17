@@ -12,7 +12,7 @@ class DiceChess {
     draw() {
         background(this.turn === 0 ? "#aaaaaa" : "#222222");
         translate(width/2, height/2);
-        
+
         const winner = this.board.winner();
         if (winner !== -1) {
             background(winner === 0 ? "white" : "black");
@@ -20,10 +20,10 @@ class DiceChess {
             stroke(winner === 0 ? "black" : "white");
             textSize(40);
             textAlign(CENTER, CENTER);
-            text(`JUGADOR ${winner+1}: VICTORIA`, 0, 0);
+            text(localize("victory", winner + 1), 0, 0);
             return;
         }
-        
+
         noStroke();
         const baseX = -(DICE_CHESS_BOARD_SIZE/2 * DICE_CHESS_TILE_SIZE);
         const baseY = -(DICE_CHESS_BOARD_SIZE/2 * DICE_CHESS_TILE_SIZE);
@@ -110,7 +110,7 @@ class DiceChess {
     mouseTile() {
         const baseX = -(DICE_CHESS_BOARD_SIZE/2 * DICE_CHESS_TILE_SIZE);
         const baseY = -(DICE_CHESS_BOARD_SIZE/2 * DICE_CHESS_TILE_SIZE);
-        
+
         const mx = mouseX - width / 2;
         const my = mouseY - height / 2;
 

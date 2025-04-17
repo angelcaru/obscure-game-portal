@@ -14,19 +14,19 @@ class PauseMenu {
 
         this.ui.reset();
 
-        text("PAUSA", width/2, height/8);
+        text(localize("pauseMenu.title"), width/2, height/8);
 
-        this.ui.button("Continuar", () => {
+        this.ui.button(localize("pauseMenu.continue"), () => {
             game = this.game;
         });
-        this.ui.button("Reiniciar", () => {
+        this.ui.button(localize("pauseMenu.restart"), () => {
             game = this.game;
             this.game.restart();
         });
-        this.ui.button("Opciones", () => {
+        this.ui.button(localize("options.button"), () => {
             game = new OptionsMenu(this);
         });
-        this.ui.button("Volver al menú principal", () => {
+        this.ui.button(localize("pauseMenu.backToMainMenu"), () => {
             game = null;
         });
 
