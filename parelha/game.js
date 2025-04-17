@@ -21,20 +21,20 @@ class Parelha {
             stroke(winner === 0 ? "black" : "white");
             textSize(40);
             textAlign(CENTER, CENTER);
-            text(`JUGADOR ${winner+1}: VICTORIA`, 0, 0);
+            text(localize("victory", String(winner + 1)), 0, 0);
             return;
         }
-    
+
         if (this.board.drawByRepetition) {
             background("limegreen");
             fill("black");
             stroke("black");
             textSize(40);
             textAlign(CENTER, CENTER);
-            text(`TABLAS POR REPETICIÓN`, 0, 0);
+            text(localize("drawByRepetition"), 0, 0);
             return;
         }
-    
+
         this.board.checkHasMoves(this.turn);
         for (const { hex } of this.board.grid) {
             const loc = hex2Screen(this.layout, hex);
@@ -52,7 +52,7 @@ class Parelha {
             }
             hexDraw(this.layout, hex);
             pop();
-            
+
             push();
             rectMode(CENTER);
             strokeWeight(4);
@@ -73,13 +73,13 @@ class Parelha {
                 circle(loc.x, loc.y, PARELHA_TILE_SIZE*0.8);
             }
             pop();
-    
+
             // push();
             // fill("gray");
             // text(coord, loc.x, loc.y);
             // pop();
         }
-    
+
         if (this.board.aiEnabled && this.turn === 1) {
             this.aiMoveCooldown -= 1/frameRate();
             if (this.aiMoveCooldown <= 0) {
@@ -91,11 +91,11 @@ class Parelha {
 
     mousePressed() {
         if (this.board.aiEnabled && this.turn === 1) return;
-    
+
         const hex = this.mouseHex();
-        
+
         if (!this.board.inbounds(hex)) return;
-        
+
         if (this.board.at(hex).piece !== -1) this.currentHex = hex;
         if (this.currentHex === null) return;
         const moves = this.board.possibleMovesForHex(this.turn, this.currentHex);
@@ -105,7 +105,7 @@ class Parelha {
             this.board.performMove(move);
             this.currentHex = null;
             this.turn = 1 - this.turn;
-    
+
             this.aiMoveCooldown = options.aiMoveCooldown;
         }
     }

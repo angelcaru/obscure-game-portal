@@ -26,23 +26,23 @@ function draw() {
     stroke(255);
 
     if (selectedGame === null) {
-        text("MENÚ PRINCIPAL", width/2, height/8);
+        text(localize("mainMenu.title"), width/2, height/8);
 
-        ui.button("Parelha", () => {
+        ui.button(localize("games.parelha"), () => {
             selectedGame = Parelha;
         });
-        ui.button("32 Dados", () => {
+        ui.button(localize("games.dicechess"), () => {
             game = new DiceChess(false);
         });
-        ui.button2("Opciones", () => {
+        ui.button2(localize("options.button"), () => {
             game = new OptionsMenu(null);
         });
     } else {
-        ui.button("1 jugador", () => {
+        ui.button(localize("singleplayer"), () => {
             game = new selectedGame(true);
             selectedGame = null;
         });
-        ui.button("2 jugadores", () => {
+        ui.button(localize("multiplayer"), () => {
             game = new selectedGame(false);
             selectedGame = null;
         });
@@ -65,4 +65,3 @@ function keyPressed() {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
-
